@@ -1,8 +1,3 @@
-xtracta-flask-api/
-git clone/
-pip install requirements.txt/
-flask run/
-
 # Xtracta Flask API
 
 API engineered to interact with xtracta
