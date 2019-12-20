@@ -1,4 +1,4 @@
-#xtracta-flask-api
-git clone
-pip install requirements.txt
-flask run
+xtracta-flask-api/
+git clone/
+pip install requirements.txt/
+flask run/
