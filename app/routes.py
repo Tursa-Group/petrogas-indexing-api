@@ -9,9 +9,9 @@ def start():
 @app.route('/upload')
 def upload():
     return "we will upload files here"
-    # POST https://api-app.xtracta.com/v1/documents
+    # POST https://api-app.xtracta.com/v1/documents/upload
 
-@app.route('/download')
+@app.route('/download/')
 def download():
     return "this endpoint will receive a doc ID and download its data from xtracta"
     # POST https://api-app.xtracta.com/v1/documents
