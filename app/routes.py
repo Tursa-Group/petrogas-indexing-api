@@ -1,18 +1,21 @@
 from app import app
+import requests
 
 
 @app.route('/')
 def start():
-    return "I break away from all conventions that do not lead to my earthly success and happiness"
+    return "<h1>Xtracta API <h2(created with FLASK)/></h1>"
 
 
-@app.route('/upload')
+@app.route('/upload', methods=['POST'])
 def upload():
-    return "we will upload files here"
+    r = requests.post('https://api-app.xtracta.com/v1/documents/upload')
+    return r.json()
     # POST https://api-app.xtracta.com/v1/documents/upload
 
-@app.route('/download/')
+
+@app.route('/download/', methods=['POST'])
 def download():
-    return "this endpoint will receive a doc ID and download its data from xtracta"
+    r = requests.post('https://api-app.xtracta.com/v1/documents')
+    return r.json()
     # POST https://api-app.xtracta.com/v1/documents
-    
