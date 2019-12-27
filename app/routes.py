@@ -1,17 +1,45 @@
 from app import app
 import requests
-
+import urllib.parse
 
 @app.route('/')
 def start():
-    return "<h1>Xtracta API </h1> <h4> Created with Flask</h4>"
+    return '''
+    <!doctype html>
+     <title>Xtracta API</title>
+      </head>
+       <body>
+         <h1>Xtracta API</h1>
+         <h4>created with Flask</h4>
+          <script src="js/scripts.js"></script>
+       </body>
+    </html>
+         '''
 
 
-@app.route('/upload', methods=['POST'])
+@app.route('/upload')
 def upload():
-    r=requests.post('https://api-app.xtracta.com/v1/documents/upload')
-    return 'posts'
-    # POST https://api-app.xtracta.com/v1/documents/upload
+    auth_upload={
+        'api_key':'b65d6427252e69e4aa29728f6ebfbf43ccf2f266',
+        'workflow_id':963111,
+        'userfile':''
+    }
+    upload_url ='https://api-app.xtracta.com/v1/documents/upload'
+    r=requests.post(upload_url, data = auth_upload)
+    return r.text
 
 
-    # POST https://api-app.xtracta.com/v1/documents
+#/dowload route 
+@app.route('/down-load')
+def download():
+    auth_download={
+        'api_key':'b65d6427252e69e4aa29728f6ebfbf43ccf2f266',
+        'workflow_id':963111,
+        'document_id':136445044
+    }
+    download_url='https://api-app.xtracta.com/v1/documents/download'
+    r=requests.post(download_url, data = auth_download)
+
+    return str(r.status_code)
+
+# POST https://api-app.xtracta.com/v1/documents
