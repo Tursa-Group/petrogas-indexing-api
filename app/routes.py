@@ -59,4 +59,4 @@ def download(doc_id):
     #POST request
     r=requests.post(url=download_url,data=auth_download)
     #return content 
-    return str(r.content)
+    return r.content
