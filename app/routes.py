@@ -1,22 +1,16 @@
+from flask import render_template
 from app import app
 import requests
-import urllib.parse
-
 
 
 @app.route('/')
 def start():
-    return '''
-    <!doctype html>
-     <title>Xtracta API</title>
-      </head>
-       <body>
-         <h1>Xtracta API</h1>
-         <h4>created with Flask</h4>
-          <script src="js/scripts.js"></script>
-       </body>
-    </html>
-         '''
+    return render_template('home.html')
+
+
+@app.route('/upload')
+def upload_template():
+    return render_template('upload.html')
 
 
 #relative_path = app/test.pdf
@@ -25,22 +19,22 @@ def start():
 @app.route('/upload_file')
 def upload():
     #files and upload_url variables
-    files = {'file': open('app/test.pdf','rb')}
+    files = {'userfile': open('app/test.pdf','rb')}
     upload_url ='https://api-app.xtracta.com/v1/documents/upload'
-    header= {"Content-Type": "application/x-www-form-urlencoded"}
-
+    
     #auth keys and file to be uploaded
     auth_upload={
         'api_key':'b65d6427252e69e4aa29728f6ebfbf43ccf2f266',
-        'workflow_id':'963111',
-        'userfile': 'files'
+        'workflow_id':'963111'
     }
+    
 
     # POST request to upload pdf file
-    r=requests.post(url=upload_url, data=auth_upload, headers=header)
-   # return r.text
-    return str(r.content)
+    r=requests.post(url=upload_url, files=files,data=auth_upload)
 
+   # return r.text
+   # print(r.raise_for_status)
+    return str(r.content)
 
 
 #/dowload route
