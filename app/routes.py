@@ -12,7 +12,7 @@ def start():
 @app.route('/upload')
 def upload():
     #files and upload_url variables
-    files = {'userfile': open('test2.pdf','rb')}
+    files = {'userfile': open('app/test2.pdf','rb')}
     upload_url ='https://api-app.xtracta.com/v1/documents/upload'
     
     #auth keys and file to be uploaded
