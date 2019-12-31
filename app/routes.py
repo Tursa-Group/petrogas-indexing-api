@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, request
 from app import app
 import requests
 
@@ -8,18 +8,11 @@ def start():
     return render_template('home.html')
 
 
-@app.route('/upload')
-def upload_template():
-    return render_template('upload.html')
-
-
-#relative_path = app/test.pdf
-
 #upload-route
-@app.route('/upload_file')
+@app.route('/upload')
 def upload():
     #files and upload_url variables
-    files = {'userfile': open('app/test.pdf','rb')}
+    files = {'userfile': open('request.files','rb')}
     upload_url ='https://api-app.xtracta.com/v1/documents/upload'
     
     #auth keys and file to be uploaded
@@ -32,13 +25,12 @@ def upload():
     # POST request to upload pdf file
     r=requests.post(url=upload_url, files=files,data=auth_upload)
 
-   # return r.text
-   # print(r.raise_for_status)
-    return str(r.content)
+   # return r.content
+    return r.content   
 
 
 #/dowload route
-@app.route('/download_file/<doc_id>')
+@app.route('/download/<doc_id>')
 def download(doc_id):
     #download url variable
     download_url='https://api-app.xtracta.com/v1/documents/'
@@ -53,4 +45,5 @@ def download(doc_id):
     #POST request
     r=requests.post(url=download_url,data=auth_download)
     #return content 
+    
     return r.content
