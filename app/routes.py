@@ -1,5 +1,6 @@
 from flask import render_template, request
 from app import app
+from PyPDF2 import PdfFileWriter, PdfFileReader
 import requests
 
 
@@ -13,8 +14,14 @@ def start():
 def upload():
     #if request.files
     pdf_data = None    
-    if ('pdf' in request.files):
-        pdf_data = request.files['pdf'].read()
+    if 'pdf' in request.files:
+        pdf_data = PdfFileReader(request.files['pdf'], 'rb') 
+        for i in range(pdf_data.numPages):
+            output = PdfFileWriter()
+            output.addPage(pdf_data.getPage(i))
+            with open("document-page%s.pdf" % i, "wb") as outputStream:
+                output.write(outputStream)
+
     else:
         return "please upload a file to process"
 
