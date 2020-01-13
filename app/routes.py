@@ -9,24 +9,32 @@ def start():
 
 
 #upload-route
-@app.route('/upload')
+@app.route('/upload', methods = ['POST'])
 def upload():
+    #if request.files
+    pdf_data = None    
+    if ('pdf' in request.files):
+        pdf_data = request.files['pdf'].read()
+    else:
+        return "please upload a file to process"
+
+    return pdf_data
     #files and upload_url variables
-    files = {'userfile': open('app/test2.pdf','rb')}
-    upload_url ='https://api-app.xtracta.com/v1/documents/upload'
+    #files = {'userfile': open('app/test2.pdf','rb')}
+   # upload_url ='https://api-app.xtracta.com/v1/documents/upload'
     
     #auth keys and file to be uploaded
-    auth_upload={
-        'api_key':'b65d6427252e69e4aa29728f6ebfbf43ccf2f266',
-        'workflow_id':'963111'
-    }
+    #auth_upload={
+      #  'api_key':'b65d6427252e69e4aa29728f6ebfbf43ccf2f266',
+     #   'workflow_id':'963111'
+    #}
     
 
     # POST request to upload pdf file
-    r=requests.post(url=upload_url, files=files,data=auth_upload)
+    #r=requests.post(url=upload_url, files=files,data=auth_upload)
    
    # return r.content
-    return r.content   
+    #return r.content   
 
 
 #/dowload route
