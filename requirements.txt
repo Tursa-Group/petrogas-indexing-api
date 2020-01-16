@@ -19,8 +19,10 @@ lazy-object-proxy==1.4.3
 MarkupSafe==1.1.1
 mccabe==0.6.1
 peewee==3.13.1
+pkg-resources==0.0.0
 pycodestyle==2.5.0
 pylint==2.4.4
+PyPDF2==1.26.0
 python-dotenv==0.10.3
 pytz==2019.3
 requests==2.22.0
