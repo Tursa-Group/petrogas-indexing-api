@@ -33,14 +33,31 @@ def upload():
                 'workflow_id':'963111'
                 }
                 r=requests.post(url=upload_url, files=files,data=auth_upload)
-                xtracta_ids.append(r.content[115:124]) 
+                xtracta_id = r.content[115:124]
+                xtracta_ids.append(xtracta_id)
+                knack_headers= {
+                    'x-knack-rest-api-key': 'ada16490-108d-11ea-a3f2-6365f2950907',
+                    'X-Knack-Application-ID': '5ddd46252bd67c0015fa6809'
+                }
+                knack_files = {'files': file_to_send}
+                knack_url = 'https://api.knack.com/v1/applications/5ddd46252bd67c0015fa6809/assets/file/upload'
+                knack_r= requests.post(url=knack_url, files=knack_files, headers=knack_headers)
+                knack_doc_id =  knack_r.content[7: 31]
+                print(knack_doc_id)
+                record_url= 'https://api.knack.com/v1/objects/object_4/records'
+                record_data= {
+                    'field_17': knack_doc_id,
+                    'field_41': xtracta_id
+                }
+                record_r= requests.post(url=record_url, headers=knack_headers, data=record_data)
+                print(record_r.content)
                 file_to_send.close()
 
             os.remove("document-page%s.pdf" % i) 
     else:
         return "please upload a file to process" , 403
 
-    return jsonify({"ids":xtracta_ids})
+    return "success"
 
 #upload even route
 @app.route('/even-upload', methods = ['POST'])
