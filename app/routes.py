@@ -1,5 +1,6 @@
 import os
-from flask import render_template, request
+import json
+from flask import render_template, request, Response
 from app import app
 from PyPDF2 import PdfFileWriter, PdfFileReader
 import requests
@@ -39,7 +40,7 @@ def upload():
     else:
         return "please upload a file to process"
 
-    return str(xtracta_ids)
+    return Response(json.dumps(xtracta_ids),  mimetype='application/json') #str(xtracta_ids)
 
 #/dowload route
 @app.route('/download/<doc_id>')
