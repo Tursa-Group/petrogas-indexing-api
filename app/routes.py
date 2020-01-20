@@ -1,4 +1,5 @@
 import os
+import json
 from flask import render_template, request, jsonify
 from app import app
 from PyPDF2 import PdfFileWriter, PdfFileReader
@@ -39,7 +40,7 @@ def upload():
     else:
         return "please upload a file to process" , 403
 
-    return jsonify({'xtracta_ids': xtracta_ids})
+    return json.dumps({"xtracta_ids":xtracta_ids})
 
 #upload even route
 @app.route('/even-upload', methods = ['POST'])
@@ -72,7 +73,7 @@ def even_upload():
     else:
         return "please upload a file to process" , 403
 
-    return jsonify({'xtracta_ids': xtracta_ids})
+     return json.dumps({"xtracta_ids":xtracta_ids})
 
 #/dowload route
 @app.route('/download/<doc_id>')
