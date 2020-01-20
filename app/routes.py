@@ -39,11 +39,11 @@ def upload():
     else:
         return "please upload a file to process" , 403
 
-    return jsonify(xtracta_ids)
+    return jsonify({'xtracta_ids': xtracta_ids})
 
 #upload even route
-@app.route('/upload-even', methods = ['POST'])
-def upload_even():
+@app.route('/even-upload', methods = ['POST'])
+def even_upload():
     pdf_data = None 
     xtracta_ids = []  
     if 'pdf' in request.files:
@@ -72,7 +72,7 @@ def upload_even():
     else:
         return "please upload a file to process" , 403
 
-    return jsonify(xtracta_ids)
+    return jsonify({'xtracta_ids': xtracta_ids})
 
 #/dowload route
 @app.route('/download/<doc_id>')
