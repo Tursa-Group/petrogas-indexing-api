@@ -8,7 +8,7 @@ import requests
 def start():
     return render_template('home.html')
 
-#upload-route
+#upload odd route
 @app.route('/upload', methods = ['POST'])
 def upload():
     pdf_data = None 
@@ -17,6 +17,39 @@ def upload():
         incoming_pdf = request.files['pdf']
         pdf_data = PdfFileReader(incoming_pdf, 'rb') 
         for i in range(1,pdf_data.numPages,2):
+            output = PdfFileWriter()
+            output.addPage(pdf_data.getPage(i))
+            with open("document-page%s.pdf" % i, "wb") as outputStream:
+                output.write(outputStream)
+                print('Created: {}'.format("document-page%s.pdf" % i))
+                outputStream.close()
+            
+            with open("document-page%s.pdf" % i, "rb") as file_to_send:
+                files = {'userfile': file_to_send}
+                upload_url ='https://api-app.xtracta.com/v1/documents/upload'
+                auth_upload = {
+                'api_key':'b65d6427252e69e4aa29728f6ebfbf43ccf2f266',
+                'workflow_id':'963111'
+                }
+                r=requests.post(url=upload_url, files=files,data=auth_upload)
+                xtracta_ids.append(r.content)
+                file_to_send.close()
+
+            os.remove("document-page%s.pdf" % i) 
+    else:
+        return "please upload a file to process" , 403
+
+    return jsonify(xtracta_ids)
+
+#upload even route
+@app.route('/upload-even', methods = ['POST'])
+def upload_even():
+    pdf_data = None 
+    xtracta_ids = []  
+    if 'pdf' in request.files:
+        incoming_pdf = request.files['pdf']
+        pdf_data = PdfFileReader(incoming_pdf, 'rb') 
+        for i in range(2,pdf_data.numPages,2):
             output = PdfFileWriter()
             output.addPage(pdf_data.getPage(i))
             with open("document-page%s.pdf" % i, "wb") as outputStream:
