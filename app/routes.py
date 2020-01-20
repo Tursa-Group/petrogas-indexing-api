@@ -33,7 +33,7 @@ def upload():
                 'workflow_id':'963111'
                 }
                 r=requests.post(url=upload_url, files=files,data=auth_upload)
-                xtracta_ids.append(r.content)
+                xtracta_ids.append(r.content[115:124]) 
                 file_to_send.close()
 
             os.remove("document-page%s.pdf" % i) 
@@ -72,7 +72,6 @@ def even_upload():
             os.remove("document-page%s.pdf" % i) 
     else:
         return "please upload a file to process" , 403
-
     return json.dumps({"xtracta_ids":xtracta_ids})
 
 #/dowload route
