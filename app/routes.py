@@ -73,7 +73,7 @@ def even_upload():
     else:
         return "please upload a file to process" , 403
 
-     return json.dumps({"xtracta_ids":xtracta_ids})
+    return json.dumps({"xtracta_ids":xtracta_ids})
 
 #/dowload route
 @app.route('/download/<doc_id>')
