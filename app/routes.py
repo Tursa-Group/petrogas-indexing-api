@@ -34,6 +34,7 @@ def upload():
                 r=requests.post(url=upload_url, files=files,data=auth_upload)
                 xtracta_ids.append(r.content)
                 file_to_send.close()
+
             os.remove("document-page%s.pdf" % i) 
     else:
         return "please upload a file to process"
