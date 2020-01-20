@@ -1,6 +1,5 @@
 import os
-import json
-from flask import render_template, request, Response
+from flask import render_template, request, jsonify
 from app import app
 from PyPDF2 import PdfFileWriter, PdfFileReader
 import requests
@@ -17,7 +16,7 @@ def upload():
     if 'pdf' in request.files:
         incoming_pdf = request.files['pdf']
         pdf_data = PdfFileReader(incoming_pdf, 'rb') 
-        for i in range(pdf_data.numPages):
+        for i in range(1,pdf_data.numPages,2):
             output = PdfFileWriter()
             output.addPage(pdf_data.getPage(i))
             with open("document-page%s.pdf" % i, "wb") as outputStream:
@@ -38,9 +37,9 @@ def upload():
 
             os.remove("document-page%s.pdf" % i) 
     else:
-        return "please upload a file to process"
+        return "please upload a file to process" , 403
 
-    return Response(json.dumps(xtracta_ids),  mimetype='application/json') #str(xtracta_ids)
+    return jsonify(xtracta_ids)
 
 #/dowload route
 @app.route('/download/<doc_id>')
