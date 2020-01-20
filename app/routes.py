@@ -13,7 +13,7 @@ def start():
 @app.route('/upload', methods = ['POST'])
 def upload():
     pdf_data = None 
-    xtracta_ids = []  
+    xtracta_ids = list()
     if 'pdf' in request.files:
         incoming_pdf = request.files['pdf']
         pdf_data = PdfFileReader(incoming_pdf, 'rb') 
@@ -40,7 +40,7 @@ def upload():
     else:
         return "please upload a file to process" , 403
 
-    return json.dumps({"xtracta_ids":xtracta_ids})
+    return jsonify({"ids":xtracta_ids})
 
 #upload even route
 @app.route('/even-upload', methods = ['POST'])
