@@ -17,11 +17,11 @@ def upload():
     if 'pdf' in request.files:
         incoming_pdf = request.files['pdf']
         pdf_data = PdfFileReader(incoming_pdf, 'rb') 
-        for i in range(1,pdf_data.numPages,2):
+        for i in range(0,pdf_data.numPages,2):
             output = PdfFileWriter()
             output.addPage(pdf_data.getPage(i))
             with open("document-page%s.pdf" % i, "wb") as outputStream:
-                output.write(outputStream)
+                output.write(outputStrange(1,pdf_data.numPages,2):ream)
                 print('Created: {}'.format("document-page%s.pdf" % i))
                 outputStream.close()
             
@@ -70,7 +70,7 @@ def even_upload():
     if 'pdf' in request.files:
         incoming_pdf = request.files['pdf']
         pdf_data = PdfFileReader(incoming_pdf, 'rb') 
-        for i in range(2,pdf_data.numPages,2):
+        for i in range(1,pdf_data.numPages,2):
             output = PdfFileWriter()
             output.addPage(pdf_data.getPage(i))
             with open("document-page%s.pdf" % i, "wb") as outputStream:
