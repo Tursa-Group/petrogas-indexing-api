@@ -18,10 +18,9 @@ def upload():
         incoming_pdf = request.files['pdf']
         pdf_data = PdfFileReader(incoming_pdf, 'rb') 
         for i in range(0,pdf_data.numPages,2):
-            output = PdfFileWriter()
             output.addPage(pdf_data.getPage(i))
             with open("document-page%s.pdf" % i, "wb") as outputStream:
-                output.write(outputStrange(1,pdf_data.numPages,2):ream)
+                output.write(outputStream)
                 print('Created: {}'.format("document-page%s.pdf" % i))
                 outputStream.close()
             
