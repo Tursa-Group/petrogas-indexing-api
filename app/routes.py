@@ -12,20 +12,23 @@ def start():
 #upload odd route
 @app.route('/upload', methods = ['POST'])
 def upload():
+    parent_file= (request.form.get('parent_pdf_id'))
     pdf_data = None 
     xtracta_ids = list()
+    #return "test", 200
     if 'pdf' in request.files:
         incoming_pdf = request.files['pdf']
-        pdf_data = PdfFileReader(incoming_pdf, 'rb') 
+        pdf_data = PdfFileReader(incoming_pdf, 'rb')
         for i in range(0,pdf_data.numPages,2):
             output = PdfFileWriter()
             output.addPage(pdf_data.getPage(i))
-            with open("document-page%s.pdf" % i, "wb") as outputStream:
+            page = i + 1
+            with open("document-page%s.pdf" % page, "wb") as outputStream:
                 output.write(outputStream)
                 print('Created: {}'.format("document-page%s.pdf" % i))
                 outputStream.close()
             
-            with open("document-page%s.pdf" % i, "rb") as file_to_send:
+            with open("document-page%s.pdf" % page, "rb") as file_to_send:
                 print(file_to_send)
                 files = {'userfile': file_to_send}
                 upload_url ='https://api-app.xtracta.com/v1/documents/upload'
@@ -37,7 +40,7 @@ def upload():
                 xtracta_id = r.content[115:124]
                 xtracta_ids.append(xtracta_id)
                 file_to_send.close()
-            with open("document-page%s.pdf" % i, "rb") as pdf_to_upload:
+            with open("document-page%s.pdf" % page, "rb") as pdf_to_upload:
                 knack_headers= {
                     'x-knack-rest-api-key': 'ada16490-108d-11ea-a3f2-6365f2950907',
                     'X-Knack-Application-ID': '5ddd46252bd67c0015fa6809'
@@ -50,13 +53,14 @@ def upload():
                 record_url= 'https://api.knack.com/v1/objects/object_4/records'
                 record_data= {
                     'field_17': knack_doc_id,
-                    'field_41': xtracta_id
+                    'field_41': xtracta_id,
+                    'field_45': parent_file
                 }
                 record_r= requests.post(url=record_url, headers=knack_headers, data=record_data)
                 print(record_r.content)
                 pdf_to_upload.close()
 
-            os.remove("document-page%s.pdf" % i) 
+            os.remove("document-page%s.pdf" % page) 
     else:
         return "please upload a file to process" , 403
 
@@ -64,22 +68,25 @@ def upload():
 
 #upload even route
 @app.route('/even-upload', methods = ['POST'])
-def even_upload():
+def upload_even():
+    parent_file= (request.form.get('parent_pdf_id'))
     pdf_data = None 
-    xtracta_ids = []  
+    xtracta_ids = list()
+    #return "test", 200
     if 'pdf' in request.files:
         incoming_pdf = request.files['pdf']
         pdf_data = PdfFileReader(incoming_pdf, 'rb') 
         for i in range(1,pdf_data.numPages,2):
             output = PdfFileWriter()
             output.addPage(pdf_data.getPage(i))
-            with open("document-page%s.pdf" % i, "wb") as outputStream:
+            page = i + 1
+            with open("document-page%s.pdf" % page, "wb") as outputStream:
                 output.write(outputStream)
                 print('Created: {}'.format("document-page%s.pdf" % i))
                 outputStream.close()
             
-            with open("document-page%s.pdf" % i, "rb") as file_to_send:
-                #print(file_to_send)
+            with open("document-page%s.pdf" % page, "rb") as file_to_send:
+                print(file_to_send)
                 files = {'userfile': file_to_send}
                 upload_url ='https://api-app.xtracta.com/v1/documents/upload'
                 auth_upload = {
@@ -90,7 +97,7 @@ def even_upload():
                 xtracta_id = r.content[115:124]
                 xtracta_ids.append(xtracta_id)
                 file_to_send.close()
-            with open("document-page%s.pdf" % i, "rb") as pdf_to_upload:
+            with open("document-page%s.pdf" % page, "rb") as pdf_to_upload:
                 knack_headers= {
                     'x-knack-rest-api-key': 'ada16490-108d-11ea-a3f2-6365f2950907',
                     'X-Knack-Application-ID': '5ddd46252bd67c0015fa6809'
@@ -103,16 +110,18 @@ def even_upload():
                 record_url= 'https://api.knack.com/v1/objects/object_4/records'
                 record_data= {
                     'field_17': knack_doc_id,
-                    'field_41': xtracta_id
+                    'field_41': xtracta_id,
+                    'field_45': parent_file
                 }
                 record_r= requests.post(url=record_url, headers=knack_headers, data=record_data)
                 print(record_r.content)
                 pdf_to_upload.close()
 
-            os.remove("document-page%s.pdf" % i) 
+            os.remove("document-page%s.pdf" % page) 
     else:
         return "please upload a file to process" , 403
-    return "success", 200
+
+    return "success"
 
 #/dowload route
 @app.route('/download/<doc_id>')
