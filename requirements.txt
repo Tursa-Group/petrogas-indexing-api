@@ -21,7 +21,7 @@ mccabe==0.6.1
 peewee==3.13.1
 pycodestyle==2.5.0
 pylint==2.4.4
-PyPDF2==1.26.0
+PyPDF2==1.27.5
 python-dotenv==0.10.3
 pytz==2019.3
 requests==2.22.0
